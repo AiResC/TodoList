@@ -36,8 +36,7 @@ function addTask() {
 	const inputElement = document.querySelector(".input");
 	const errorElement = document.querySelector(".error-info");
 	const errorBox = document.querySelector(".error-box");
-	console.log(inputElement.value);
-	if (inputElement.value.trim().replace(/\s+/g, " ") === " ") {
+	if (inputElement.value.replace(/\s+/g, " ") === " ") {
 		errorBox.classList.add("errored");
 		errorElement.innerHTML = `
         ERROR! Task name should contain at least 1 character.
