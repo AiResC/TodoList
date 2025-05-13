@@ -1,6 +1,8 @@
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 let deletedTasks = JSON.parse(localStorage.getItem("deletedTasks")) || [];
 
+console.log(tasks);
+console.log(deletedTasks);
 updateTaskElement();
 
 function handleKey(event) {
@@ -24,7 +26,7 @@ function updateTaskElement() {
 		tasksElement.innerHTML += `
         <div class="task deleted-task">
              <p class="task-info"> ${deletedTasks[i]}</p>
-             <button class="delete-button deleted-button ${i}">Deleted</button>   
+             <button class="delete-button ${i} deleted-button" onclick="removeTask(this);">Remove</button>   
         </div>
         `;
 	}
@@ -35,8 +37,13 @@ function addTask() {
 	const errorElement = document.querySelector(".error-info");
 	const errorBox = document.querySelector(".error-box");
 	console.log(inputElement.value);
-	if (inputElement.value) {
-		tasks.push([inputElement.value]);
+	if (inputElement.value.trim().replace(/\s+/g, " ") === " ") {
+		errorBox.classList.add("errored");
+		errorElement.innerHTML = `
+        ERROR! Task name should contain at least 1 character.
+        `;
+	} else if (inputElement.value) {
+		tasks.push(inputElement.value);
 		inputElement.value = "";
 		errorBox.classList.remove("errored");
 		updateTaskElement();
@@ -58,6 +65,7 @@ function deleteTask(task) {
 	console.log(deletedTasks);
 	tasks.splice(index, 1);
 	localStorage.setItem("deletedTasks", JSON.stringify(deletedTasks));
+	localStorage.setItem("tasks", JSON.stringify(tasks));
 	updateTaskElement();
 }
 
@@ -66,5 +74,16 @@ function deleteAllTasks() {
 	deletedTasks = [];
 	localStorage.setItem("deletedTasks", JSON.stringify([]));
 	localStorage.setItem("tasks", JSON.stringify([]));
+	updateTaskElement();
+}
+function deleteDeletedTasks() {
+	deletedTasks = [];
+	localStorage.setItem("deletedTasks", JSON.stringify([]));
+	updateTaskElement();
+}
+
+function removeTask(task) {
+	deletedTasks.splice(task.classList[1], 1);
+	localStorage.setItem("deletedTasks", JSON.stringify(deletedTasks));
 	updateTaskElement();
 }
