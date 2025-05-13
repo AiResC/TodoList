@@ -2,6 +2,12 @@ let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
 updateTaskElement();
 
+function handleKey(event) {
+	if (event.key === "Enter") {
+		addTask();
+	}
+}
+
 function updateTaskElement() {
 	let tasksElement = document.querySelector(".bottom-part");
 	tasksElement.innerHTML = "";
