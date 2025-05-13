@@ -1,4 +1,4 @@
-let tasks = ["wash dishes"];
+let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
 updateTaskElement();
 
@@ -26,6 +26,7 @@ function addTask() {
 		errorBox.classList.remove("errored");
 		updateTaskElement();
 		errorElement.innerHTML = "";
+		localStorage.setItem("tasks", JSON.stringify(tasks));
 	} else {
 		errorBox.classList.add("errored");
 		errorElement.innerHTML = `
