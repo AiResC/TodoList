@@ -1,4 +1,5 @@
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+let deletedTasks = JSON.parse(localStorage.getItem("deletedTasks")) || [];
 
 updateTaskElement();
 
@@ -16,6 +17,14 @@ function updateTaskElement() {
         <div class="task">
              <p class="task-info"> ${tasks[i]}</p>
              <button class="delete-button ${i}" onclick="deleteTask(this)">Delete</button>   
+        </div>
+        `;
+	}
+	for (let i = 0; i < deletedTasks.length; i++) {
+		tasksElement.innerHTML += `
+        <div class="task deleted-task">
+             <p class="task-info"> ${deletedTasks[i]}</p>
+             <button class="delete-button deleted-button ${i}">Deleted</button>   
         </div>
         `;
 	}
@@ -42,7 +51,20 @@ function addTask() {
 }
 
 function deleteTask(task) {
-	tasks.pop(task.classList[1]);
+	let index = task.classList[1];
+	console.log(tasks);
+	console.log(index);
+	deletedTasks.push(tasks[index]);
+	console.log(deletedTasks);
+	tasks.splice(index, 1);
+	localStorage.setItem("deletedTasks", JSON.stringify(deletedTasks));
 	updateTaskElement();
-	("");
+}
+
+function deleteAllTasks() {
+	tasks = [];
+	deletedTasks = [];
+	localStorage.setItem("deletedTasks", JSON.stringify([]));
+	localStorage.setItem("tasks", JSON.stringify([]));
+	updateTaskElement();
 }
